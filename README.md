@@ -1,15 +1,22 @@
-This basic objective of this project is about team work or collaboration work with a partner in printf concept.
+The basic objective of this project is about teamwork or collaboration work with a partner in printf concept.
 
 This projects have 2 mandatory and 14 advanced tasks which listed below.
+
 Tasks:
-0. Write a function that produces output according to a format.
-Prototype: int _printf(const char *format, ...);
-Returns: the number of characters printed (excluding the null byte used to end output to strings)
-write output to stdout, the standard output stream
+0. Write a function that produces output according to a format:\n
+Prototype: int _printf(const char *format, ...);\n
+Returns: the number of characters printed (excluding the null byte used to end output to strings)\n
+
+write output to stdout, the standard output stream\n
+
 format is a character string. The format string is composed of zero or more directives. See man 3 printf for more detail. You need to handle the following conversion specifiers:
+
 c
+
 s
+
 %
+
 You don’t have to reproduce the buffer handling of the C library printf function
 You don’t have to handle the flag characters
 You don’t have to handle field width
