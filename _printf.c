@@ -109,4 +109,3 @@ int cont = 0;
 cont = function_manager(aux, arg);
 return (cont);
 }
-
