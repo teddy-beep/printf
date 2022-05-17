@@ -108,6 +108,7 @@ int call_function_manager(char aux, va_list arg)
 {
 int cont = 0;
 
+<<<<<<< HEAD
 cont = function_manager(aux, arg);
 return (cont);
 #include <unistd.h>
@@ -154,4 +155,8 @@ i++;
 }
 va_end(list);
 return (count);
+=======
+	cont = function_manager(aux, arg);
+	return (cont);
+>>>>>>> 46a561218615b8cf58d5fc4aa11870d71f144199
 }
