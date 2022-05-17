@@ -1,52 +1,45 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
 #include "main.h"
-#include <stddef.h>
 /**
- * _printf - recreates the printf function
- * @format: string with format specifier
- * Return: number of characters printed
+ *_printf - takes in a string and prints different types of arguments for
+ * an unspecified amount of arguments
+ * @format: the initial string that tell us what is going to be printed
+ * Return: the amount of times we write to stdout
  */
 int _printf(const char *format, ...)
 {
-	if (format != NULL)
-	{
-		int count = 0, i;
-		int (*m)(va_list);
-		va_list args;
+	int i, count;
 
-		va_start(args, format);
-		i = 0;
-		if (format[0] == '%' && format[1] == '\0')
-			return (-1);
-		while (format != NULL && format[i] != '\0')
+	int (*f)(va_list);
+
+	va_list list;
+
+	if (format == NULL)
+		return (-1);
+
+	va_start(list, format);
+	i = count = 0;
+
+	while (format[i] != '\0')
+	{
+		if (format[i] == '%')
 		{
-			if (format[i] == '%')
-			{
-				if (format[i + 1] == '%')
-				{
-					count += _putchar(format[i]);
-					i += 2;
-				}
-				else
-				{
-					m = get_func(format[i + 1]);
-					if (m)
-						count += m(args);
-					else
-						count = _putchar(format[i]) + _putchar(format[i + 1]);
-					i += 2;
-				}
-			}
+			if (format[i + 1] == '\0')
+				return (-1);
+			f = get_func(format[i + 1]);
+			if (f == NULL)
+				count += print_nan(format[i], format[i + 1]);
 			else
-			{
-				count += _putchar(format[i]);
-				i++;
-			}
+				count += f(list);
+			i++;
 		}
-		va_end(args);
-		return (count);
+		else
+		{
+			_putchar(format[i]);
+			count++;
+		}
+		i++;
 	}
-	return (-1);
+	va_end(list);
+	return (count);
 }
