@@ -47,11 +47,11 @@ typedef struct buffer_s
 
 {
 
-char *buffer;
+  char *buffer;
 
-char *start;
+  char *start;
 
-unsigned int len;
+  unsigned int len;
 
 } buffer_t;
 
@@ -67,9 +67,9 @@ typedef struct converter_s
 
 {
 
-unsigned char specifier;
+  unsigned char specifier;
 
-unsigned int (*func)(va_list, buffer_t *,
+  unsigned int (*func)(va_list, buffer_t *,
 
 		       unsigned char, int, int, unsigned char);
 
@@ -87,9 +87,9 @@ typedef struct flag_s
 
 {
 
-unsigned char flag;
+  unsigned char flag;
 
-unsigned char value;
+  unsigned char value;
 
 } flag_t;
 
@@ -205,3 +205,4 @@ unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
 
 
 
+#endif /* MAIN_H */
