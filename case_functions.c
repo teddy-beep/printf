@@ -1,104 +1,161 @@
 #include "main.h"
+unsigned int convert_c(va_list args, buffer_t *output,
+unsigned char flags, int wid, int prec, unsigned char len);
+unsigned int convert_percent(va_list args, buffer_t *output,
+
+			     unsigned char flags, int wid, int prec, unsigned char len);
+
+unsigned int convert_p(va_list args, buffer_t *output,
+
+		       unsigned char flags, int wid, int prec, unsigned char len);
+
+
+
 /**
- * print_character - prints character
- * @arg: va_list parameter
- * Description: print character
- * Return: 1
+ * convert_c - Converts an argument to an unsigned char and
+ *             stores it to a buffer contained in a struct.
+ * @args: A va_list pointing to the argument to be converted.
+ * @flags: Flag modifiers.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
+ * @len: A length modifier.
+ * @output: A buffer_t struct containing a character array.
+ *
+ * Return: The number of bytes stored to the buffer.
  */
-int print_character(va_list arg)
+
+unsigned int convert_c(va_list args, buffer_t *output,
+
+		       unsigned char flags, int wid, int prec, unsigned char len)
+
 {
-	int i;
 
-	i = va_arg(arg, int);
-	_putchar(i);
+  char c;
 
-	return (1);
-}
-/**
- * print_sign - print sign
- * @arg: va_list parameter
- * @base: base 10, 8, 16, 2 etc..
- * Description: print numbers and signed
- * Return: num of characters
- */
-int print_sign(va_list arg, int base)
-{
-	int i = 0, cont = 0;
-	char *s;
+  unsigned int ret = 0;
 
-	i = va_arg(arg, int);
-	if (i < 0)
-	{
-		i = -(i);
-		_putchar('-');
-		cont += 1;
-	}
-	s = convert_to("0123456789ABCDEF", i, base);
-	_puts(s);
-	cont += _strlen(s);
-	return (cont);
-}
-/**
- * print_unsign - print_unsign
- * @arg: va_list parameter
- * @base: base 10, 8, 16 etc..
- * Description: print numbers without signed
- * Return: num of characters
- */
-int print_unsign(va_list arg, int base)
-{
-	int cont = 0;
-	unsigned int i;
-	char *s;
 
-	i = va_arg(arg, unsigned int);
-	s = convert_to("0123456789ABCDEF", i, base);
-	_puts(s);
-	cont = _strlen(s);
 
-	return (cont);
+  (void)prec;
+
+  (void)len;
+
+
+
+  c = va_arg(args, int);
+
+
+
+  ret += print_width(output, ret, flags, wid);
+
+  ret += _memcpy(output, &c, 1);
+
+  ret += print_neg_width(output, ret, flags, wid);
+
+
+
+  return (ret);
 
 }
+
+
+
 /**
- * print_string - print string
- * @arg: va_list parameter
- * Description: print string
- * Return: num of characters
+ * convert_percent - Stores a percent sign to a
+ *                   buffer contained in a struct.
+ * @args: A va_list pointing to the argument to be converted.
+ * @flags: Flag modifiers.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
+ * @len: A length modifier.
+ * @output: A buffer_t struct containing a character array.
+ *
+ * Return: The number of bytes stored to the buffer (always 1).
  */
-int print_string(va_list arg)
+
+unsigned int convert_percent(va_list args, buffer_t *output,
+
+			     unsigned char flags, int wid, int prec, unsigned char len)
+
 {
-	char *s;
-	int cont = 0;
 
-	s = va_arg(arg, char *);
-	if (!s)
-	{
-		s = "(null)";
-		_puts(s);
+  char percent = '%';
 
-		return (_strlen(s));
-	}
-	_puts(s);
-	cont = _strlen(s);
-	return (cont);
+  unsigned int ret = 0;
+
+
+
+  (void)args;
+
+  (void)prec;
+
+  (void)len;
+
+
+
+  ret += print_width(output, ret, flags, wid);
+
+  ret += _memcpy(output, &percent, 1);
+
+  ret += print_neg_width(output, ret, flags, wid);
+
+
+
+  return (ret);
+
 }
-/**
- * print_base16_upper_lower - print_base16_upper_lower
- * @arg: va_list parameter
- *@representation: pointer parameter
- * Description: This function takes 0123456789ABCDEF or 0123456789abcdef
- * in representation parameter for print hexadecimal format
- * Return: num of characters
- */
-int print_base16_upper_lower(va_list arg, char *representation)
-{
-	unsigned int i = 0, cont = 0;
-	char *s;
 
-	i = va_arg(arg, unsigned int);
-	s = convert_to(representation, i, 16);
-	_puts(s);
-	cont = _strlen(s);
-	return (cont);
+
+
+/**
+ * convert_p - Converts the address of an argument to hex and
+ *             stores it to a buffer contained in a struct.
+ * @args: A va_list pointing to the argument to be converted.
+ * @flags: Flag modifiers.
+ * @wid: A width modifier.
+ * @prec: A precision modifier.
+ * @len: A length modifier.
+ * @output: A buffer_t struct containing a character array.
+ *
+ * Return: The number of bytes stored to the buffer.
+ */
+
+unsigned int convert_p(va_list args, buffer_t *output,
+
+		       unsigned char flags, int wid, int prec, unsigned char len)
+
+{
+
+  char *null = "(nil)";
+
+  unsigned long int address;
+
+  unsigned int ret = 0;
+
+
+
+  (void)len;
+
+
+
+  address = va_arg(args, unsigned long int);
+
+  if (address == '\0')
+
+    return (_memcpy(output, null, 5));
+
+
+
+  flags |= 32;
+
+  ret += convert_ubase(output, address, "0123456789abcdef",
+
+		       flags, wid, prec);
+
+  ret += print_neg_width(output, ret, flags, wid);
+
+
+
+  return (ret);
 
 }

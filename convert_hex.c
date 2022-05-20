@@ -33,11 +33,17 @@ ret += convert_ubase(output, num, "0123456789abcdef",
 
 			 flags, wid, prec);
 
-ret += print_neg_width(output, ret, flags, wid);
 
-return (ret);
+
+  ret += print_neg_width(output, ret, flags, wid);
+
+
+
+  return (ret);
 
 }
+
+
 
 /**
  * convert_X - Converts an unsigned int argument to hex using ABCDEF
@@ -58,33 +64,47 @@ unsigned int convert_X(va_list args, buffer_t *output,
 
 {
 
-unsigned long int num;
+  unsigned long int num;
 
-unsigned int ret = 0;
+  unsigned int ret = 0;
 
-char *lead = "0X";
+  char *lead = "0X";
 
-if (len == LONG)
 
-num = va_arg(args, unsigned long);
 
-else
+  if (len == LONG)
 
-num = va_arg(args, unsigned int);
+    num = va_arg(args, unsigned long);
 
-if (len == SHORT)
+  else
 
-num = (unsigned short)num;
+    num = va_arg(args, unsigned int);
 
-if (HASH_FLAG == 1 && num != 0)
+  if (len == SHORT)
 
-ret += _memcpy(output, lead, 2);
+    num = (unsigned short)num;
 
-if (!(num == 0 && prec == 0))
 
-ret += convert_ubase(output, num, "0123456789ABCDEF",
+
+  if (HASH_FLAG == 1 && num != 0)
+
+    ret += _memcpy(output, lead, 2);
+
+
+
+  if (!(num == 0 && prec == 0))
+
+    ret += convert_ubase(output, num, "0123456789ABCDEF",
 
 			 flags, wid, prec);
-ret += print_neg_width(output, ret, flags, wid);
-return (ret);
+
+
+
+  ret += print_neg_width(output, ret, flags, wid);
+
+
+
+  return (ret);
+
 }
+
